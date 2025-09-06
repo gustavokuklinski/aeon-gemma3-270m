@@ -1,0 +1,8 @@
+# plugins/gemma-3-270m-it/config.yml
+aeon_plugin:
+  plugin_name: gemma-3-270m-it
+  type: text-text
+  model_path: ./model/
+  command: /gemma3
+  parameters: <PROMPT>
+  desc: Used to embed Gemma3 results to RAG
