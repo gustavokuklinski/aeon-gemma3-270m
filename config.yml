@@ -2,7 +2,7 @@
 aeon_plugin:
   plugin_name: gemma-3-270m-it
   type: text-text
-  model_path: ./model/
+  model_path: ./model/gemma-3-270m-it-Q8_0.gguf
   command: /gemma3
   parameters: <PROMPT>
   desc: Used to embed Gemma3 results to RAG
