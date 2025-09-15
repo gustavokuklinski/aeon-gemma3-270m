@@ -10,13 +10,12 @@ from src.libs.messages import (print_plugin_message,
 
 def _ingest_conversation_turn(user_input, aeon_output, vectorstore, text_splitter, llama_embeddings):
     try:
-        # Combine the user's question and the bot's answer into one document
-        conversation_text = f"USER: {user_input}\nGEMMA3: {aeon_output}"
+        conversation_text = f"QUESTION: {user_input}\nANSWER: {aeon_output}"
         
         # Create a LangChain Document object
         conversation_document = Document(
             page_content=conversation_text,
-            metadata={"source": "gemma-3-270m-it"} # Optional metadata
+            metadata={"source": "gemma-3-270m-it"}
         )
         
         # Split the document into chunks
@@ -60,7 +59,6 @@ def run_plugin(args: str, **kwargs) -> dict:
 
     if not model_file_path.exists():
         print_error_message(f"Model file not found at: {model_file_path}")
-        return {"success": False, "message": "Model file not found."}
 
     try:
         print_plugin_message(f"Loading model: {model_file_path.name}...")
@@ -99,8 +97,7 @@ def run_plugin(args: str, **kwargs) -> dict:
             {"user": prompt, plugin_name: prompt, "source": plugin_name}
         )
 
-        print_plugin_message(f"[GEMMA3]: {message_content}")
+        print_plugin_message(f"\033[1;33m[GEMMA3]\033[0m: {message_content}")
 
     except Exception as e:
         print_error_message(f"An error occurred during model inference: {e}")
-        return {"success": False, "message": f"Inference failed: {e}"}
