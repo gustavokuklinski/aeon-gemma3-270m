@@ -15,7 +15,7 @@ def _ingest_conversation_turn(user_input, aeon_output, vectorstore, text_splitte
         # Create a LangChain Document object
         conversation_document = Document(
             page_content=conversation_text,
-            metadata={"source": "gemma-3-270m-it"}
+            metadata={"source": "Plugin: aeon-gemma-3-270m"}
         )
         
         # Split the document into chunks
@@ -49,13 +49,13 @@ def run_plugin(args: str, **kwargs) -> dict:
     if not args:
         print_error_message(f"Usage: /{plugin_name} <PROMPT>")
 
-
     prompt = args
     
     model_path = plugin_config.get("model_path")
-    
+
     plugin_dir = Path(__file__).parent
     model_file_path = plugin_dir / model_path
+
 
     if not model_file_path.exists():
         print_error_message(f"Model file not found at: {model_file_path}")
@@ -93,11 +93,13 @@ def run_plugin(args: str, **kwargs) -> dict:
             conversation_filename
         )
 
-        current_chat_history.append(
-            {"user": prompt, plugin_name: prompt, "source": plugin_name}
-        )
-
         print_plugin_message(f"\033[1;33m[GEMMA3]\033[0m: {message_content}")
 
+        return {
+            "message": message_content,
+            "source": plugin_name,
+            "filepath": None
+        }
+    
     except Exception as e:
         print_error_message(f"An error occurred during model inference: {e}")
